@@ -20,7 +20,7 @@ sigmoid函数图像
 
 ![sigmoid函数图像](images/1.2 Hypothesis Representation.bmp)
 
-​	$h_\theta(x)​$ 将给出一个对输入值是1的预测概率，例如，当 $h_\theta(x)=0.7​$ 时意味着对输入样本分类是1的概率为0.7 
+​	$h_\theta(x)$ 将给出一个对输入值是1的预测概率，例如，当 $h_\theta(x)=0.7$ 时意味着对输入样本分类是1的概率为0.7 
 
 
 
@@ -38,7 +38,7 @@ z=0,\ e^{0}\rightarrow 1 \Rightarrow g(z)=1/2\\
 z\rightarrow\infty,\ e^{-\infty}\rightarrow 0 \Rightarrow g(z)=1\\
 z\rightarrow-\infty,\ e^{\infty}\rightarrow \infty \Rightarrow g(z)=0
 $$
-​	对于函数 $g(z)​$ 的输入 $\theta^Tx​$ ：
+​	对于函数 $g(z)$ 的输入 $\theta^Tx$ ：
 $$
 h_\theta(x)=g(\theta^Tx)\ge0.5\quad when \quad \theta^Tx\ge0
 $$
@@ -60,7 +60,7 @@ $$
 
  
 
-​	样本**真实值** $y=0$ 时，$J(\theta) - h_\theta(x)​$  的图像如下所示
+​	样本**真实值** $y=0$ 时，$J(\theta) - h_\theta(x)$  的图像如下所示
 
 ![](../吴恩达机器学习笔记/images/2.1 Cost Function_2.bmp)
 $$
@@ -96,7 +96,7 @@ $$
 
 ​	下面是导数项的求导过程：
 
-化简 $J(\theta)​$ ：
+化简 $J(\theta)$ ：
 $$
 h_\theta(x) = \frac{1}{1+e^{-(\theta_0+\theta_1x1+\dots+\theta_nx_n)}}\\
 J(\theta )=-\frac{1}{m}\sum_{i=1}^m[y^{(i)}\log(h_\theta(x^{(i)}))+(1-y^{(i)})\log(1-h_\theta(x^{(i)}))]\\
@@ -108,7 +108,7 @@ J(\theta)=-\frac{1}{m}\sum_{i=1}^m[y^{(i)}\log(\frac{1}{1+e^{-(\theta_0+\theta_1
 =\frac{1}{m}\sum_{i=1}^m[(\theta_0+\theta_1x1+\dots+\theta_nx_n)(1-y^{(i)})+\log(1+e^{-(\theta_0+\theta_1x1+\dots+\theta_nx_n)})]\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\
 $$
 
-对 $\theta_j​$ 求导：
+对 $\theta_j$ 求导：
 $$
 \frac{\partial}{\partial\theta_j}J(\theta)=\frac{1}{m}\sum_{i=1}^m[x_j(1-y^{(i)})+\frac{1}{1+e^{-(\theta_0+\theta_1x1+\dots+\theta_nx_n)}}e^{-(\theta_0+\theta_1x1+\dots+\theta_nx_n)}(-1)x_j]\\
 =\frac{1}{m}\sum_{i=1}^m[1-y^{(i)}-\frac{1}{1+e^{-(\theta_0+\theta_1x1+\dots+\theta_nx_n)}}e^{-(\theta_0+\theta_1x1+\dots+\theta_nx_n)}]x_j\\
@@ -116,13 +116,13 @@ $$
 =\frac{1}{m}\sum_{i=1}^m[h_\theta(x^{(i)})-y^{(i)}]x_j\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad
 $$
 
-因此，对  $\theta_j​$ 的更新公式：
+因此，对  $\theta_j$ 的更新公式：
 $$
 repeat\{\\
 \theta_j:=\theta_j-\frac{\alpha}{m}\sum_{i=1}^m[h_\theta(x^{(i)})-y^{(i)}]x_j\\    
 \}\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad
 $$
-不难发现此时的算法似乎和线性回归一样，但是需要注意的是，虽然形式一样但二者的 $h_\theta(x^{(i)})​$ 是不一样的。
+不难发现此时的算法似乎和线性回归一样，但是需要注意的是，虽然形式一样但二者的 $h_\theta(x^{(i)})$ 是不一样的。
 
 
 
