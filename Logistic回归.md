@@ -85,7 +85,7 @@ $$
 
 ​	不难看出，当 y=1 或者 y=0 时，（7）都变为上一小节的对应形式（5）。此时，写出完整的 cost function：
 $$
-J(\theta)=-\frac{1}{m}\sum_{i=1}^m[y^{(i)}\log(h_\theta(x))+(1-y^{(i)})\log(1-h_\theta(x^{(i)}))]
+J(\theta)=-\frac{1}{m}\sum_{i=1}^m[y^{(i)}\log(h_\theta(x^{i}))+(1-y^{(i)})\log(1-h_\theta(x^{(i)}))]
 $$
 ​	梯度下降法的通常形式：
 $$
