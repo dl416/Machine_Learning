@@ -73,3 +73,137 @@ $$
 $$
 A=U\Lambda U^{-1}=U\Lambda U^T
 $$
+
+​		至此，对于矩阵 A 的特征值分解的推导已经结束，下面说明一些分解的意义和由此导出的性质。矩阵 Ａ 分解为对应的三个映射（变换），现在假设有向量 $\vec p$ ，用 A 将其变换到 A 的列空间中：
+$$
+Ap = U\Lambda U^Tp
+$$
+​		其中 U、U‘  都是正交矩阵，U 先对 $\vec p$ 进行正交变换，它将 $\vec p$ 用新的坐标系表出，这个坐标系是 A 的所有特征向量构成的坐标系，假设将 $\vec p$ 用 A 的所有特征向量表示为（注意 p 和 $x_i$ 都是向量）：
+$$
+p = a_1x_1+a_2x_2+\dots+a_mx_m
+$$
+​		则通过第一个变换就可以把 x 表示为 $[a_1\ a_2\ \dots\ a_m]^T$，注意 $x^T_ix_j=1(i=j)$ 
+$$
+U\Lambda U^Tx=U\Lambda
+\left[\begin{matrix}
+x_1^T\\
+x_2^T\\
+\vdots\\
+x_m^T
+\end{matrix}\right](a_1x_1+a_2x_2+\dots+a_mx_m)=U\Lambda
+\left[\begin{matrix}
+a_1\\
+a_2\\
+\vdots\\
+a_m
+\end{matrix}\right]
+$$
+​		紧接着，在新的坐标系下，由中间的对角阵 $\Lambda$ 对新的坐标进行变换，其作用效果就是将向量往各个轴的方向拉伸或者压缩：
+$$
+U\Lambda
+\left[\begin{matrix}
+a_1\\
+a_2\\
+\vdots\\
+a_m
+\end{matrix}\right]=U
+\left[\begin{matrix}
+\lambda_1 & \dots & 0\\
+\vdots & \ddots & \vdots\\
+0 & \dots & \lambda_m
+\end{matrix}\right]
+\left[\begin{matrix}
+a_1\\
+a_2\\
+\vdots\\
+a_m
+\end{matrix}\right]= U
+\left[\begin{matrix}
+\lambda_1 a_1\\
+\lambda_2 a_2\\
+\vdots\\
+\lambda_m a_m
+\end{matrix}\right]
+$$
+
+
+​		最后一个变换就是 U 对拉伸或压缩后的变量做变换，由于 U 和 U’ 是互逆矩阵，因此 U 又会将第一次变换的坐标还原，由此可以得出结论：**任意一个对称阵所做的变换仅会对原向量进行拉伸和压缩（U 和 U‘ 相互抵消了），因此，根据对称阵A的特征向量，如果A是2*2的，那么就可以在二维平面中任意一个矩形经过A变换后还是矩形（不改变正交性）。**
+
+  
+
+## 奇异值分解 SVD
+
+​		对于对称阵而言，任意一组正交基经过变换后被映射到了另一组正交基。那么，对于任意的 $m\times n$ 矩阵，能否找到一组正交基使得进过它的变换以后还是正交基？答案是肯定的，这也是 SVD 的核心所在。
+
+​		假设存在矩阵 $A_{m\times n}$ ，现在的目标是：在 n 维空间中找一组正交基，使得经过 A 的变换以后还是正交的。假设已经找到这样一组正交基：
+$$
+\{v_1,v_2,\dots,v_n\}
+$$
+​		则 A 矩阵将这组基映射为：
+$$
+\{Av_1,Av_2,\dots,Av_n\}
+$$
+​		如果要使它们两两正交，即：
+$$
+Av_i\sdot Av_j=(Av_i)^TAv_j=v_i^TA^TAv_j=0
+$$
+​		根据假设，存在：
+$$
+v_i^Tv_j=v_i\sdot v_j=0
+$$
+​		**如果，选择正交基 v 为 A’A 的特征向量**，由于 A‘A 是对称阵， v 之间两两正交，那么：
+$$
+\left.\begin{aligned}
+v_i^TA^TAv_j
+& =v_i^T\lambda_jv_j\\
+& =\lambda_jv_i^Tv_j\\
+& =\lambda_jv_i\sdot v_j=0
+\end{aligned}\right.
+$$
+​		这样就找到了正交基映射后还是正交基了，现在，将映射后的正交基单位化：
+$$
+Av_i\sdot Av_i=v_i^TA^TAv_i=\lambda_iv_i\sdot v_i=\lambda_i\\
+|Av_i|^2=\lambda_i\ge0\\
+u_i=\frac{Av_i}{|Av_i|}=\frac{1}{\sqrt{\lambda_i}}Av_i
+$$
+​		由此可得：
+$$
+Av_i = \sigma_iu_i\quad \sigma_i(奇异值)=\sqrt{\lambda_i}
+$$
+​		所以有：
+$$
+A = U\Sigma V^T
+$$
+其中 $V_{n\times n},\ U_{m\times m},\ \Sigma_{m\times n}$ 。
+
+
+
+
+
+## SVD的求解过程
+
+​		由（6）式出发构造矩阵 $U,\Sigma,V$ ：
+$$
+\begin{aligned}
+AA^T & =U\Sigma V^TV\Sigma^TU^T\\
+& = U\Sigma^2U^T\\
+A^TA & = V\Sigma^TU^TU\Sigma V^T\\
+& = V\Sigma^2V^T
+\end{aligned}
+$$
+​		由实对称矩阵必定可以正交化，而 A‘A 和 AA’ 是实对称阵，故矩阵 U、V是酉矩阵（实正交矩阵 $U^T=U^{-1}$），因此，对矩阵 A‘A、AA’ 进行正交对角化，即可得到 U、V。再由
+$$
+\begin{aligned}
+A&=U\Sigma V^T\\
+AV&=U\Sigma\\
+Av_i&=\sigma_iu_i
+\end{aligned}
+$$
+​		所以：
+$$
+\sigma_i=\frac{Av_i}{u_i}
+$$
+​		即可得到矩阵 $\Sigma$ 
+
+
+
