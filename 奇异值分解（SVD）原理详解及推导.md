@@ -1,6 +1,6 @@
 
 
-# 奇异值分解（SVD）原理详解及推导
+# 奇异值分解（SVD）原理及推导
 
 ​		SVD（Singular Value Decomposition）是线性代数中一种重要的矩阵分解，在某些方面与对称矩阵基于特征向量的对角化类似。在数据降维和矩阵压缩存储方面有着重要的应用。
 
@@ -207,3 +207,70 @@ $$
 
 
 
+## 图像压缩
+
+​		SVD 的一个简单应用即是用于图像的压缩，从（15）式入手假设（m-n=1）：
+$$
+\left.\begin{aligned}
+A = & U\Sigma V^T\\
+= & [u_1\ u_2\ \dots\ u_m]_{m\times m}
+\left[\begin{matrix}
+\sigma_1 & \dots & 0\\
+\vdots & \ddots & \vdots\\
+0 & \dots & \sigma_n\\
+0 & \dots & 0
+\end{matrix}\right]_{m\times n}
+\left[\begin{matrix}
+v_1^T\\
+v_2^T\\
+\vdots\\
+v_n^T
+\end{matrix}\right]_{n\times n}\\
+= & [u_1\ u_2\ \dots\ u_m]_{m\times m} 
+[\Sigma_1\ \Sigma_2\ \dots\ \Sigma_n]_{m\times n}
+\left[\begin{matrix}
+v_1^T\\
+v_2^T\\
+\vdots\\
+v_n^T
+\end{matrix}\right]_{n\times n}(把\Sigma矩阵写成列向量形式)\\
+= & [U\Sigma_1\ U\Sigma_2\ \dots\ U\Sigma_n]_{m \times n}
+\left[\begin{matrix}
+v_1^T\\ v_2^T\\ \vdots\\ v_n^T\end{matrix}\right]_{n\times n}(注意\Sigma_i只有下标i处有值\sigma_i，u_i\left[\begin{matrix} 0\\ \vdots\\ \sigma_i \\ \vdots\\0\end{matrix}\right]=\sigma_iu_i)\\
+= & [\sigma_1u_1\ \sigma_2u_2\ \dots\ \sigma_nu_n]_{m\times n}
+\left[\begin{matrix}
+v_1^T\\ v_2^T\\ \vdots\\ v_n^T\end{matrix}\right]_{n\times n}(从内积的角度看)\\
+= & \sigma_1u_1v_1^T+\sigma_2u_2v_2^T+\dots+\sigma_nu_nv_n^T\\
+\end{aligned}\right.\tag{*}
+$$
+
+
+​		在 matlab 下首先读入一张图片，并进行 SVD 分解，并获得 u、s、v 三个矩阵。
+
+![](images/man.jpg)
+
+<center>图3 原始图像</center>
+
+​		注意到原始图像并不是一个方阵，其尺寸为 480x320 ， s 为奇异值矩阵 （*） 式中的 $\Sigma$ 除对角线外其他元素都是 0 ，并且对角线元素也衰减很快，图4 为 s 对角线元素的图像（由于第一项太大 228.5 不便于显示，因此未画出第一项）。
+
+![](images/SVD.jpg)
+
+<center>图4 奇异值矩阵的对角元素</center>
+
+​		s 为 480x320 的矩阵，可以看出衰减速度非常快，仅 80 多项后奇异值就小于 1 了，可以认为小于某一界限的 s 的值变不再对整体图像有较大的影响，仅用主要的 k 个 s 利用（\*）式来还原图像， 这时根据（\*）式我们可以看出，存储原图需要 mxn 个单元，而经过 SVD 处理，取前 k 项 s 则仅需 k(m+n+1) 个存储单元。例如本例中如果 k=80，则压缩存储需要 64080 个单元，但原图需要153600 个单元，压缩图像仅用了原图 41% 的存储空间。
+
+![](images/SVD2.jpg)
+
+<center>图4 k=1时 A=s1*u1*v1'</center>
+
+![](images/SVD3.jpg)
+
+<center>图5 k=5 A=s1*u1*v1'+...+s5*u5*v5'</center>
+
+![](images/SVD4.jpg)
+
+<center>图6 k=80 A=s1*u1*v1'+...+s5*u5*v5'</center>
+
+​		从 图6 可以看出当 k 取到 80 时已经很接近原图了，还可以设置 s 的某个阈值，当设置 s 大于 0.5 以上合成的图像肉眼就已经很难和原图区分了。
+
+​		SVD 在 PAC 主成分分析中的应用将在下一节专门讨论。
