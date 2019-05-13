@@ -201,7 +201,7 @@ Av_i&=\sigma_iu_i
 $$
 ​		所以：
 $$
-\sigma_i=\frac{Av_i}{u_i}
+u_i=\frac{Av_i}{\sigma_i}
 $$
 ​		即可得到矩阵 $\Sigma$ 
 
